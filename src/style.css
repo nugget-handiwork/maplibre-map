@@ -1,0 +1,176 @@
+/* The embedding app owns the theme, not the operating system: it sets
+   color-scheme on the root, and every token below resolves through
+   light-dark(). Standing alone, the pair leaves the choice to the OS.
+   Never add a prefers-color-scheme rule — it would ignore the app. */
+:root {
+  color-scheme: light dark;
+
+  --surface: light-dark(#ffffff, #111111);
+  --ink: light-dark(#111111, #ffffff);
+  --muted: light-dark(#717171, #b8b8b8);
+  --grid: light-dark(#eaeaea, #2f2f2f);
+  --axis: light-dark(#b8b8b8, #474747);
+  --halo: light-dark(#ffffff, #111111);
+  --tooltip-surface: #333333;
+  --tooltip-ink: #ffffff;
+
+  --categorical-1: #fc6b22;
+  --categorical-2: light-dark(#212431, #ebebeb);
+  --categorical-3: #283dff;
+  --categorical-4: light-dark(#e6d429, #ede557);
+  --categorical-5: #43a178;
+  --categorical-6: #b3d5ea;
+
+  --sequential-1: light-dark(#fc6b22, #ff893f);
+  --sequential-2: light-dark(#ff893f, #fc6b22);
+  --sequential-3: light-dark(#ffa962, #f54500);
+  --sequential-4: light-dark(#ffc782, #c54200);
+  --sequential-5: light-dark(#ffe1b9, #a32000);
+  --sequential-6: light-dark(#fff4e3, #720000);
+
+  --secondary-1: light-dark(#283dff, #4154ff);
+  --secondary-2: light-dark(#4154ff, #283dff);
+  --secondary-3: light-dark(#6b8eff, #2425e6);
+  --secondary-4: light-dark(#9cb6ff, #2124ab);
+  --secondary-5: light-dark(#c2d4ff, #181e98);
+  --secondary-6: light-dark(#dde8ff, #161750);
+
+  --diverging-1: #fc6b22;
+  --diverging-2: light-dark(#f6cba4, #6e421c);
+  --diverging-3: light-dark(#fae0c9, #3c2816);
+  --diverging-4: light-dark(#d1d6fa, #171c3a);
+  --diverging-5: light-dark(#a8b2f6, #1f2b6e);
+  --diverging-6: #283dff;
+}
+
+/* The app owns the ground the artifact sits on: no page background and no
+   outer margin, so the map draws to the edges of the frame. */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  color: var(--ink);
+}
+
+/* The artifact sits in an iframe whose height follows its content, so the
+   map is sized by ratio rather than by vh — a viewport unit inside the
+   frame means nothing. */
+#map {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+}
+
+#legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.5rem 0 0;
+  font-family: var(--family-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.legend-caption {
+  color: var(--ink);
+}
+
+/* The bar carries the whole scale, so it spans the map rather than sitting
+   in a corner: a gradient read against a short swatch is guesswork. */
+.legend-bar {
+  height: 0.6rem;
+  border-radius: 2px;
+}
+
+.legend-ticks {
+  display: flex;
+  justify-content: space-between;
+}
+
+#attribution {
+  padding: 0.25rem 0 0;
+  font-family: var(--family-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.maplibregl-popup-content {
+  background: var(--tooltip-surface);
+  color: var(--tooltip-ink);
+  font-size: 0.75rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 3px;
+}
+
+.maplibregl-popup-tip {
+  display: none;
+}
+
+.artifact-error {
+  padding: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--categorical-1);
+}
+
+/* Search box. Sits in a MapLibre control slot so it stacks with the map's
+   own controls instead of floating over them. */
+.map-search {
+  position: relative;
+  background: var(--surface);
+  border-radius: 3px;
+}
+
+.map-search input {
+  width: 12rem;
+  padding: 0.35rem 0.5rem;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.8rem;
+}
+
+.map-search input::placeholder {
+  color: var(--muted);
+}
+
+.map-search input:focus {
+  outline: 1px solid var(--axis);
+}
+
+.map-search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  min-width: 16rem;
+  margin-top: 2px;
+  background: var(--surface);
+  border-radius: 3px;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.25);
+  overflow: hidden;
+}
+
+.map-search .map-search-result {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.35rem 0.5rem;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.8rem;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.map-search .map-search-result:hover {
+  background: var(--grid);
+}
+
+.map-search .map-search-detail {
+  color: var(--muted);
+}
