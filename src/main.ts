@@ -38,8 +38,20 @@ map.on('error', (event: ErrorEvent) =>
   showError(event.error?.message ?? 'Map error'),
 )
 
-map.on('load', () => {
-  drawMap(map).catch((error: unknown) =>
-    showError(error instanceof Error ? error.message : String(error)),
-  )
-})
+// The renderer draws without a GPU, so tiles are still decoding and painting
+// after the network goes quiet. index.html declares that this page says
+// when it is done instead: once the data is drawn and the map has settled,
+// or with the reason it could not draw.
+window.artifactReady(
+  new Promise<void>((resolve, reject) => {
+    map.once('error', (event: ErrorEvent) => reject(event.error))
+    map.on('load', () => {
+      drawMap(map)
+        .then(() => map.once('idle', () => resolve()))
+        .catch((error: unknown) => {
+          showError(error instanceof Error ? error.message : String(error))
+          reject(error)
+        })
+    })
+  }),
+)

@@ -8,6 +8,7 @@ declare global {
   interface Window {
     artifactQuery(sql: string): Promise<Row[]>
     artifactData(fileName: string): Promise<unknown>
+    artifactReady(signal: Promise<unknown>): void
   }
 }
 
