@@ -12,7 +12,7 @@ import { GEO_BASE } from './geography'
 // was built against until this constant moves. The archive's major version,
 // the sprite set, and protomaps-themes-base's major must agree — all three
 // are v4 here.
-const ARCHIVE = 'basemap/v4.15.2-20260826.pmtiles'
+const ARCHIVE = 'basemap/v4.15.2-20261115.pmtiles'
 const SOURCE = 'protomaps'
 
 // Grayscale rather than light or dark, and pinned rather than following the
